@@ -1,0 +1,40 @@
+# Environment variables (secrets) — commit .env.example with placeholders only.
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependencies
+node_modules/
+
+# Build output. dist/ is intentionally NOT ignored — the package installs from
+# GitHub, so the built bundle is committed and CI verifies it stays in sync.
+build/
+.next/
+out/
+
+# Vercel CLI metadata (machine-specific)
+.vercel
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Testing & coverage
+coverage/
+.vitest-cache/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+

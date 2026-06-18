@@ -1,0 +1,9 @@
+# This directory is the Vercel static output root (see vercel.json).
+#
+# It is intentionally (almost) empty. Only files placed here are web-served as
+# static assets. The serverless functions in `api/` deploy and run regardless
+# of this setting. Pointing `outputDirectory` here — instead of the repo root
+# (`.`) — stops source files like `db/schema.sql`, `lib/auth.js`, and
+# `package.json` from being fetchable at predictable URLs.
+#
+# Do not move secrets or source into this folder.
