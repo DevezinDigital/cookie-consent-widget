@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Cookie Consent API — Devezin Digital</title>
+    <style>
+      :root {
+        --pure-black: #000000;
+        --light-gray: #e0e0e0;
+        --primary-white: #ffffff;
+        --gradient-purple: #bf3eff;
+        --gradient-blue: #5271ff;
+        --gradient-cyan: #4ac9ff;
+        --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+        --focus-ring-color: var(--gradient-blue);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        background: var(--pure-black);
+        color: var(--light-gray);
+        line-height: 1.6;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+
+      main {
+        position: relative;
+        overflow: hidden;
+        max-width: 34rem;
+        padding: 2.5rem 2rem;
+        background: rgba(15, 15, 15, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0.75rem;
+        box-shadow: var(--card-shadow);
+      }
+
+      /* Brand gradient accent bar, mirroring .card::before */
+      main::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          var(--gradient-purple),
+          var(--gradient-blue),
+          var(--gradient-cyan)
+        );
+        opacity: 0.7;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        background: linear-gradient(
+          to right,
+          var(--gradient-purple),
+          var(--gradient-blue),
+          var(--gradient-cyan)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        color: var(--gradient-cyan);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(74, 201, 255, 0.4);
+        transition: border-color 0.2s ease;
+      }
+
+      a:hover {
+        border-bottom-color: var(--gradient-cyan);
+      }
+
+      a:focus-visible {
+        outline: 2px solid var(--focus-ring-color);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Cookie Consent API</h1>
+      <p>
+        This is the consent-logging service operated by Devezin Digital. It
+        records cookie consent decisions for the websites we manage, in support
+        of GDPR/CCPA compliance. There is nothing to see here.
+      </p>
+      <p>
+        For data access, correction, or deletion requests, please contact
+        <a href="mailto:privacy@devezindigital.com"
+          >privacy@devezindigital.com</a
+        >.
+      </p>
+    </main>
+  </body>
+</html>
