@@ -16,6 +16,8 @@ paths = [
   '''.*/README\.md$''',
   '''db/schema\.sql$''',
   '''package-lock\.json$''',
+  # This config lists placeholder strings by design; don't scan it.
+  '''\.gitleaks\.toml$''',
   # Built bundle is generated from source; scan the source, not the artifact.
   '''^dist/''',
 ]
