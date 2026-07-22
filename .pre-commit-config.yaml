@@ -1,0 +1,23 @@
+# Local secret scanning that runs before a commit is created — the earliest
+# possible catch, before a secret ever reaches history or the remote.
+#
+# One-time setup (requires https://pre-commit.com):
+#   pipx install pre-commit   # or: brew install pre-commit
+#   pre-commit install
+#
+# TruffleHog must be installed and on PATH for its hook to run:
+#   brew install trufflehog   # or see github.com/trufflesecurity/trufflehog
+
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: trufflehog
+        name: TruffleHog
+        entry: bash -c 'trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail --no-update'
+        language: system
+        pass_filenames: false

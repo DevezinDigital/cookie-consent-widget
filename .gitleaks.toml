@@ -1,0 +1,36 @@
+# gitleaks configuration.
+# Extends the built-in ruleset and adds an allowlist so the placeholder values
+# that legitimately live in docs and examples don't trip the scanner. Real
+# secrets never belong in the repo — see .env.example and SECURITY.md.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known-safe placeholders and generated artifacts"
+
+# Files that only ever contain documented placeholder values.
+paths = [
+  '''\.env\.example$''',
+  '''README\.md$''',
+  '''.*/README\.md$''',
+  '''db/schema\.sql$''',
+  '''package-lock\.json$''',
+  # This config lists placeholder strings by design; don't scan it.
+  '''\.gitleaks\.toml$''',
+  # Built bundle is generated from source; scan the source, not the artifact.
+  '''^dist/''',
+]
+
+# Placeholder strings that appear in setup instructions and sample configs.
+regexes = [
+  '''postgres://user:password@host/db''',
+  '''your-consent-api\.vercel\.app''',
+  '''your-consent-app\.vercel\.app''',
+  '''your-site-domain-key''',
+  '''your-cf-token''',
+  '''paste-your-generated-token-here''',
+  '''G-XXXXXXXXXX''',
+  '''<token>''',
+  '''<your-site-token>''',
+]
