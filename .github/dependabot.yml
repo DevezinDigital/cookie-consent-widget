@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Application + build/test dependencies.
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      # Batch low-risk dev tooling into one PR to cut noise.
+      dev-dependencies:
+        dependency-type: development
+
+  # Keep the GitHub Actions used in CI patched (a common supply-chain vector).
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
