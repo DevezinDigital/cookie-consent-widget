@@ -1,18 +1,82 @@
+# Dependabot version updates: one weekly digest on Monday at noon Eastern,
+# family-grouped, with a 7-day cooldown before a new release is proposed.
+# Security alerts/updates are separate and are enabled in Settings → Advanced
+# Security, not here.
 version: 2
 updates:
   # Application + build/test dependencies.
   - package-ecosystem: npm
-    directory: "/"
+    directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: "12:00"
+      # Without a timezone GitHub reads `time` as UTC (8 am Eastern). Noon
+      # Eastern lands the digest in the owner's working day.
+      timezone: "America/New_York"
     open-pull-requests-limit: 10
+    # Don't open bump PRs for releases younger than 7 days, so a compromised
+    # or broken release has a week to be caught and yanked before we see it.
+    # Applies to version updates only — security updates are NOT delayed.
+    cooldown:
+      default-days: 7
     groups:
-      # Batch low-risk dev tooling into one PR to cut noise.
-      dev-dependencies:
-        dependency-type: development
+      # Bundle related packages so we don't get a PR per package. (Replaces
+      # the old single dev-dependencies group: the families below still batch
+      # the dev tooling, and the catch-all sweeps up the rest.)
+      #
+      # Group order is precedence order: a package that matches more than one
+      # group lands in the FIRST group it matches. That's why the specific
+      # groups sit above the catch-all groups (types/dev-tooling/other) —
+      # e.g. @types/react is claimed by `react` before `types` ever sees it.
+      # Do not reorder.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      rollup:
+        patterns:
+          - "rollup"
+          - "rollup-plugin-*"
+          - "@rollup/*"
+          - "tslib" # @rollup/plugin-typescript peer — moves with it
+      types:
+        patterns:
+          - "@types/*"
+      dev-tooling:
+        patterns:
+          - "eslint*"
+          - "@eslint/*" # scoped flat-config packages —
+            # `eslint*` only matches names starting with "eslint",
+            # so scoped ones need their own pattern.
+          - "typescript-eslint"
+          - "globals"
+          - "typescript"
+          - "prettier"
+          - "vitest"
+          - "@vitest/*"
+      # Catch-all — MUST stay last. Sweeps every remaining dependency that
+      # didn't match a group above into one PR, instead of an individual PR
+      # each. Tradeoff: this single PR can bundle unrelated misc deps. Remove
+      # this group if you'd rather review leftover packages one at a time.
+      other:
+        patterns:
+          - "*"
 
   # Keep the GitHub Actions used in CI patched (a common supply-chain vector).
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: "12:00"
+      timezone: "America/New_York"
+    cooldown:
+      default-days: 7
+    groups:
+      # Batch all action bumps into a single weekly PR rather than one each.
+      actions:
+        patterns:
+          - "*"
