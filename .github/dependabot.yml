@@ -20,6 +20,18 @@ updates:
     # Applies to version updates only — security updates are NOT delayed.
     cooldown:
       default-days: 7
+    # Majors this repo can't take yet. Each one fails `npm ci` (ERESOLVE) or
+    # the build, and drags down whatever group it lands in. Only the blocked
+    # major is skipped: patches and minors on the current line keep coming,
+    # including security fixes. Note: ignore rules also apply to Dependabot
+    # security PRs; Dependabot alerts (Security tab) and `npm audit` are
+    # unaffected. The weekly repo review checks the blockers every Monday and
+    # says when an entry can be removed.
+    ignore:
+      # TypeScript 7: typescript-eslint only supports TypeScript < 6.1.
+      # TypeScript 6 is still allowed.
+      - dependency-name: "typescript"
+        versions: [">=7"]
     groups:
       # Bundle related packages so we don't get a PR per package. (Replaces
       # the old single dev-dependencies group: the families below still batch
