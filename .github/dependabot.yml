@@ -1,5 +1,5 @@
 # Dependabot version updates: one weekly digest on Monday at noon Eastern,
-# family-grouped, with a 7-day cooldown before a new release is proposed.
+# one minor+patch PR, with a 7-day cooldown before a new release is proposed.
 # Security alerts/updates are separate and are enabled in Settings → Advanced
 # Security, not here.
 version: 2
@@ -33,49 +33,51 @@ updates:
       - dependency-name: "typescript"
         versions: [">=7"]
     groups:
-      # Bundle related packages so we don't get a PR per package. (Replaces
-      # the old single dev-dependencies group: the families below still batch
-      # the dev tooling, and the catch-all sweeps up the rest.)
-      #
-      # Group order is precedence order: a package that matches more than one
-      # group lands in the FIRST group it matches. That's why the specific
-      # groups sit above the catch-all groups (types/dev-tooling/other) —
-      # e.g. @types/react is claimed by `react` before `types` ever sees it.
-      # Do not reorder.
-      react:
+      # Security fixes: every minor/patch security fix in one PR. A security
+      # fix that needs a MAJOR upgrade is left out of this group on purpose, so
+      # it arrives as its own PR instead of holding the other fixes hostage
+      # (a CVE fix once sat behind a Sanity major in one combined PR).
+      security:
+        applies-to: security-updates
+        update-types: ["minor", "patch"]
+        patterns:
+          - "*"
+      # Routine updates: ALL minor and patch version updates in one weekly PR.
+      # These are the low-risk ones; one PR means one CI run and no rebase
+      # cascade between sibling PRs.
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+        patterns:
+          - "*"
+      # Majors: never mixed with the routine PR. Families that must move
+      # together stay grouped; any other major arrives as its own PR so it can
+      # be read and judged on its own. (Order matters: a package lands in the
+      # FIRST group it matches.)
+      react-major:
+        update-types: ["major"]
         patterns:
           - "react"
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
-      rollup:
+      rollup-major:
+        update-types: ["major"]
         patterns:
           - "rollup"
           - "rollup-plugin-*"
           - "@rollup/*"
-          - "tslib" # @rollup/plugin-typescript peer — moves with it
-      types:
-        patterns:
-          - "@types/*"
-      dev-tooling:
+          - "tslib"
+      dev-tooling-major:
+        update-types: ["major"]
         patterns:
           - "eslint*"
-          - "@eslint/*" # scoped flat-config packages —
-            # `eslint*` only matches names starting with "eslint",
-            # so scoped ones need their own pattern.
+          - "@eslint/*"
           - "typescript-eslint"
           - "globals"
           - "typescript"
           - "prettier"
           - "vitest"
           - "@vitest/*"
-      # Catch-all — MUST stay last. Sweeps every remaining dependency that
-      # didn't match a group above into one PR, instead of an individual PR
-      # each. Tradeoff: this single PR can bundle unrelated misc deps. Remove
-      # this group if you'd rather review leftover packages one at a time.
-      other:
-        patterns:
-          - "*"
 
   # Keep the GitHub Actions used in CI patched (a common supply-chain vector).
   - package-ecosystem: github-actions
